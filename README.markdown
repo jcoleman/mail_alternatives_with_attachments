@@ -1,7 +1,7 @@
 Why?
 ====
 
-Spam filters often require that an HTML email also have a Text alternative that is generally the same as the HTML message. This means you need to send an email with a MIME type of `multipart/alternative` containing `text/html` and `text/plain` parts. ActionMailer 3 supports this scenario, but it falls apart when you need to add (inline) attachments to that mix. The property MIME hierarchy for an email like this is:
+Spam filters often require that an HTML email also have a text alternative that is generally the same as the HTML message. This means you need to send an email with a MIME type of `multipart/alternative` containing `text/html` and `text/plain` parts. ActionMailer 3 supports this scenario, but it falls apart when you need to add (inline) attachments to that mix. The proper MIME hierarchy for an email like this is:
 
 * `multipart/mixed`
     * `multipart/alternative`
@@ -29,8 +29,8 @@ Usage:
 
 Including the `mail_alternatives_with_attachments` gem in your project will patch ActionMailer with the following two methods:
 
-* `ActionMailer::Base#prepare_message(headers={})`: This method does exactly what `ActionMailer::Base#mail(headers={})` does; however it doesn't automatically rendering of templates so that we add our own custom message parts.
-* `Mail::Message#alternative_content_types_with_attachment(options, &block)`: This method allows you to conveniently add all of the different parts of complex email with alternatives and attachments.
+* `ActionMailer::Base#prepare_message(headers={})`: This method does exactly what `ActionMailer::Base#mail(headers={})` does; however it doesn't automatically render templates. This allows us to add our own custom message parts.
+* `Mail::Message#alternative_content_types_with_attachment(options, &block)`: This method allows you to conveniently add all of the different parts of a complex email with alternatives and attachments.
 
 Typically when using ActionMailer 3, you would create a message with the following code:
 
@@ -42,7 +42,7 @@ Typically when using ActionMailer 3, you would create a message with the followi
       end
     end
 
-Using this gem to create an email with both alternatives and attachments you would use the following code:
+To create an email with both alternatives and attachments you would use the following code:
 
     class MyEmailerClass < ActionMailer::Base
       def my_email_method(address, attachment, logo)
