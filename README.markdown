@@ -13,6 +13,17 @@ Spam filters often require that an HTML email also have a Text alternative that 
 
 If this seems more complicated then it should be, that's because it is. Thankfully, this gem allows you to create this entire hierarchy without all the hard work.
 
+Installation:
+=============
+
+Either include 
+
+    gem "mail_alternatives_with_attachments"
+
+in your Gemfile (if using Bundler) or run
+
+    gem install mail_alternatives_with_attachments
+
 Usage:
 ======
 
