@@ -2,5 +2,5 @@ require "mail_alternatives_with_attachments/version"
 
 module MailAlternativesWithAttachments
   require "mail_alternatives_with_attachments/action_mailer_prepare_message"
-  require "mail_alternatives_with_attachments/mail_message_alternative_types_with_attachment"
+  require "mail_alternatives_with_attachments/mail_message_alternative_content_types_with_attachment"
 end
