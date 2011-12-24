@@ -39,7 +39,7 @@ Using this gem to create an email with both alternatives and attachments you wou
         
         message.alternative_content_types_with_attachment(
           :text => render_to_string(:template => "my_template.text"),
-          :html => render_to_string("my_template.html"),
+          :html => render_to_string("my_template.html")
         ) do |inline_attachments|
           inline_attachments.inline['logo.png'] = logo
         end
