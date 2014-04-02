@@ -2,19 +2,19 @@ module MailAlternativesWithAttachments::ActionMailerPrepareMessage
 
   # Copied directly from ActionMailer::Base#mail but without
   # the automatic rendering of templates.
-  def prepare_message(headers={})
-    # Guard flag to prevent both the old and the new API from firing
-    # Should be removed when old API is removed
-    @mail_was_called = true
+  def prepare_message(headers = {}, &block)
+    return @_message if @_mail_was_called && headers.blank? && !block
+
+    @_mail_was_called = true
     m = @_message
 
-    # At the beginning, do not consider class default for parts order neither content_type
+    # At the beginning, do not consider class default for content_type
     content_type = headers[:content_type]
-    parts_order  = headers[:parts_order]
 
     # Call all the procs (if any)
-    default_values = self.class.default.merge(self.class.default) do |k,v|
-      v.respond_to?(:call) ? v.bind(self).call : v
+    default_values = {}
+    self.class.default.each do |k,v|
+      default_values[k] = v.is_a?(Proc) ? instance_eval(&v) : v
     end
 
     # Handle defaults
@@ -25,7 +25,7 @@ module MailAlternativesWithAttachments::ActionMailerPrepareMessage
     m.charset = charset = headers[:charset]
 
     # Set configure delivery behavior
-    wrap_delivery_behavior!(headers.delete(:delivery_method))
+    wrap_delivery_behavior!(headers.delete(:delivery_method), headers.delete(:delivery_method_options))
 
     # Assign all headers except parts_order, content_type and body
     assignable = headers.except(:parts_order, :content_type, :body, :template_name, :template_path)
@@ -36,8 +36,7 @@ module MailAlternativesWithAttachments::ActionMailerPrepareMessage
     m.charset      = charset
 
     if m.multipart?
-      parts_order ||= headers[:parts_order]
-      m.body.set_sort_order(parts_order)
+      m.body.set_sort_order(headers[:parts_order])
       m.body.sort_parts!
     end
 
