@@ -12,8 +12,7 @@ Gem::Specification.new do |s|
   s.description = %q{ActionMailer 3 makes it much easier to send emails, but there is one case it doesn't handle well.\
  Specifically, it is difficult to send a message that has the proper MIME hiearchy for an email with both HTML and text alternatives\
  that also includes attachments. This gem solves that need.}
-
-  s.rubyforge_project = "mail_alternatives_with_attachments"
+ s.license       = "MIT"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
